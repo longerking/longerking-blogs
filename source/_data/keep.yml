@@ -11,10 +11,12 @@
 # ---------------------------------------------------------------------------------------
 base_info:
   # Your blog website title
-  title: Keep Theme
+  title: Work4Life(WL)
 
   # Your blog website author name
-  author: Keep Team
+  author: longerking
+
+  url: https://longerking.github.io/
 
 # ---------------------------------------------------------------------------------------
 # Theme style settings
@@ -51,7 +53,7 @@ style:
 
   # First screen style settings
   first_screen:
-    enable: false  # Option values: true | false
+    enable: true  # Option values: true | false
 
     # Set transparent background for header
     header_transparent: false  # Option values: true | false
@@ -61,7 +63,7 @@ style:
 
     # First screen description
     # You can use the "||" to begin a newline, maximum is two lines.
-    description: Keep writing and Keep loving.
+    description: Just Work for Life(WL)! ||  Be Your Longer King!
 
     # If you want to customize the first screen font color, you can fill in here (e.g. "#0066CC")
     # Otherwise use the theme default font color
