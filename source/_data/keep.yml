@@ -269,7 +269,7 @@ comment:
     repo_id: R_kgDOJ8DDFw
     category: Announcements    # Recommend use Announcements
     category_id: DIC_kwDOJ8DDF84CYoZz
-    reactions_enabled: false   # Option values: true | false
+    reactions_enabled: true   # Option values: true | false
 
 # ---------------------------------------------------------------------------------------
 # RSS
