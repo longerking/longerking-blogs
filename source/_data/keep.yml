@@ -270,6 +270,8 @@ comment:
     category: Announcements    # Recommend use Announcements
     category_id: DIC_kwDOJ8DDF84CYoZz
     reactions_enabled: true   # Option values: true | false
+    position: top             # Comments input position, Options values: top | bottom
+    lang: zh-CN               # Language, Options see: https://github.com/giscus/giscus/tree/main/locales
 
 # ---------------------------------------------------------------------------------------
 # RSS
@@ -300,7 +302,7 @@ cdn:
 # Docs: https://keep-docs.xpoet.cn/tutorial/configuration-guide/pjax.html
 # ---------------------------------------------------------------------------------------
 pjax:
-  enable: false  # Option values: true | false
+  enable: true  # Option values: true | false
 
 # ---------------------------------------------------------------------------------------
 # Footer settings
