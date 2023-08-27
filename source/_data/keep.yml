@@ -11,7 +11,7 @@
 # ---------------------------------------------------------------------------------------
 base_info:
   # Your blog website title
-  title: Work4Life(WL)
+  title: LongerKing-Blogs
 
   # Your blog website author name
   author: longerking
@@ -63,7 +63,7 @@ style:
 
     # First screen description
     # You can use the "||" to begin a newline, maximum is two lines.
-    description: Just Work for Life(WL)! ||  Be Your Longer King!
+    description: Just Work for Life! ||  Be Your Longer King!
 
     # If you want to customize the first screen font color, you can fill in here (e.g. "#0066CC")
     # Otherwise use the theme default font color
