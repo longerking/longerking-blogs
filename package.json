@@ -1,8 +1,9 @@
 {
-  "name": "keep-theme-starter",
-  "version": "3.7.3",
+  "name": "hexo-theme-keep-starter",
+  "version": "4.1.5",
   "private": false,
   "scripts": {
+    "dev": "hexo clean && hexo server --open",
     "start": "hexo clean && hexo server --open",
     "server": "hexo clean && hexo server --open",
     "build": "hexo clean && hexo generate",
@@ -20,7 +21,7 @@
   },
   "homepage": "https://github.com/theme-keep/hexo-theme-keep-starter#readme",
   "hexo": {
-    "version": "6.3.0"
+    "version": "7.0.0"
   },
   "dependencies": {
     "hexo": "^7.0.0",
@@ -33,7 +34,7 @@
     "hexo-renderer-marked": "^6.0.0",
     "hexo-renderer-stylus": "^3.0.0",
     "hexo-server": "^3.0.0",
-    "hexo-theme-keep": "^4.0.1",
+    "hexo-theme-keep": "^4.2.3",
     "hexo-wordcount": "^6.0.1"
   }
 }

@@ -2,14 +2,16 @@ name: deploying Hexo project to GitHub pages
 on:
   push:
     branches:
-      - main # master 分支有 push 行为时就触发这个 action
+      - main # main 分支有 push 行为时就触发这个 action
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
 
       - name: Build and Deploy
         uses: theme-keep/hexo-deploy-github-pages-action@master # 使用专门部署 Hexo 到 GitHub pages 的 action
