@@ -16,7 +16,7 @@ base_info:
   # Your blog website author name
   author: longerking
 
-  url: https://longerking.github.io/longerking-blogs
+  url: https://longerking.github.io/blogs
 
 # ---------------------------------------------------------------------------------------
 # Theme style settings
@@ -265,7 +265,7 @@ comment:
   #      https://giscus.app
   # Please generate your configuration items in https://giscus.app
   giscus:
-    repo: longerking/longerking-blogs
+    repo: longerking/blogs
     repo_id: R_kgDOJ8DDFw
     category: General    # Recommend use General Not Announcements  // 这里需要查看你的github discussion 已有分组，默认评论到了General分组下面，造成了可能拉取不到的问题
     category_id: DIC_kwDOJ8DDF84CYoZz
