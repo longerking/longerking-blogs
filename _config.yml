@@ -99,6 +99,11 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: keep
 
+# mermaid流程图支持
+mermaid:
+  enable: true
+  version: 
+
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
