@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Just Work for Life,  Be Your Longer King!">
+    <meta name="author" content="longerking">
+    
+    <title>
+        
+            ChatGLM-Using |
+        
+        LongerKing-Blogs
+    </title>
+    
+<link rel="stylesheet" href="/longerking-blogs/css/style.css">
+
+    
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"longerking.github.io","root":"/longerking-blogs/","language":"zh-CN","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"title":"LongerKing-Blogs","author":"longerking","url":"https://longerking.github.io/longerking-blogs"},"menu":{"Home":"/","Archives":"/archives","Tags":"/tags","Categories":"/categories","About":"/about"},"first_screen":{"enable":false,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":false},"social_contact":{"enable":false,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"facebook":null,"email":null}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":false,"tag":false,"post_datetime":"updated"},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"enable":true,"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","img_align":"left","copyright_info":true},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.8"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":"longerking/longerking-blogs","repo_id":"R_kgDOJ8DDFw","category":"General","category_id":"DIC_kwDOJ8DDF84CYoZz","reactions_enabled":true}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"jsdelivr"},"pjax":{"enable":true},"footer":{"since":2020,"word_count":false,"icp":{"enable":false,"record_code":null,"url":"https://beian.miit.gov.cn"},"site_deploy":{"enable":false,"provider":"github","url":null},"shields_style":{"enable":false,"custom":[{"link_url":null,"img_url":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"/longerking-blogs","style":{"primary_color":"#0066cc","logo":"/images/logo.svg","favicon":"/images/logo.svg","avatar":"/images/avatar.svg","font_size":null,"font_family":null,"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"header_transparent":false,"background_img":"/images/bg.svg","description":"Just Work for Life! ||  Be Your Longer King!","font_color":null,"hitokoto":false},"scroll":{"progress_bar":true,"percent":false}},"home_article":{"category":{"enable":true,"limit":3},"tag":{"enable":true,"limit":5}},"source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+            <a class="site-name border-box" href="/longerking-blogs/">
+               LongerKing-Blogs
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/">
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/archives">
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/tags">
+                                
+                                标签
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/categories">
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/about">
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/">
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/archives">
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/tags">
+                            
+                            标签
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/categories">
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/about">
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        ChatGLM-Using
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">longerking</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2023-08-15 23:36:33</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Tue Aug 15 2023 15:42:10 GMT+0000">2023-08-15 15:42:10</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/longerking-blogs/categories/LLMs/">LLMs</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/longerking-blogs/tags/LLMs/">LLMs</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>1.9k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>9 分钟</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <p>大语言模型使用</p>
+<h1 id="ChatGLM-Using"><a href="#ChatGLM-Using" class="headerlink" title="ChatGLM-Using"></a>ChatGLM-Using</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>自从OpenAI ChatGPT爆火以来，开源界 AI界刮起了大模型之风。这些国产大模型，我们当然要体验起来。本文主要从代码层面记录了如何调用体验大模型，从一个调包工程师升级成为一个调用大模型模型工程师。:poop:</p>
+<h2 id="ChatGLM2-6B"><a href="#ChatGLM2-6B" class="headerlink" title="ChatGLM2-6B"></a>ChatGLM2-6B</h2><p>ChatGLM2-6B是由清华THUDM实验室开源的中英双语对话模型 <a class="link"   target="_blank" rel="noopener" href="https://github.com/THUDM/ChatGLM-6B" >ChatGLM-6B<i class="fas fa-external-link-alt"></i></a> 的第二代版，本基于 <a class="link"   target="_blank" rel="noopener" href="https://github.com/THUDM/GLM" >General Language Model (GLM)<i class="fas fa-external-link-alt"></i></a> 架构，具有 62 亿参数。结合模型量化技术，用户可以在消费级的显卡上进行本地部署（INT4 量化级别下最低只需 6GB 显存）。 ChatGLM-6B 使用了和 ChatGPT 相似的技术，针对中文问答和对话进行了优化。经过约 1T 标识符的中英双语训练，辅以监督微调、反馈自助、人类反馈强化学习等技术的加持，62 亿参数的 ChatGLM-6B 已经能生成相当符合人类偏好的回答。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><blockquote>
+<ol>
+<li><a class="link"   target="_blank" rel="noopener" href="https://github.com/THUDM/ChatGLM2-6B" >https://github.com/THUDM/ChatGLM2-6B<i class="fas fa-external-link-alt"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://huggingface.co/THUDM/chatglm2-6b" >https://huggingface.co/THUDM/chatglm2-6b<i class="fas fa-external-link-alt"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://huggingface.co/THUDM/chatglm-6b-int4" >https://huggingface.co/THUDM/chatglm-6b-int4<i class="fas fa-external-link-alt"></i></a></li>
+</ol>
+</blockquote>
+<h3 id="HardWare-Requirements"><a href="#HardWare-Requirements" class="headerlink" title="HardWare Requirements"></a>HardWare Requirements</h3><table><thead><tr><th width="149.33333333333331">量化等级</th><th width="277">编码 2048 长度的最小显存</th><th>生成 8192 长度的最小显存</th></tr></thead><tbody><tr><td>FP16 / BF16</td><td>13.1 GB</td><td>12.8 GB</td></tr><tr><td>INT8</td><td>8.2 GB</td><td>8.1 GB</td></tr><tr><td>INT4</td><td>5.5 GB</td><td>5.1 GB</td></tr></tbody></table>
+
+<p>这里受限于资源，我们以量化INT4的模型测试，同时INT4根据官网介绍支持CPU。</p>
+<h3 id="DownLoad-Models"><a href="#DownLoad-Models" class="headerlink" title="DownLoad Models"></a>DownLoad Models</h3><p>这里直接下载Hugging Face(HF)上的int量化后的模型。HF是一个托管发布分享模型数据集的开源平台。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">支持大文件下载</span></span><br><span class="line">git lfs install</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下载模型，约7GB，下载比较耗时</span></span><br><span class="line">git clone --depth 1 https://huggingface.co/THUDM/chatglm-6b-int4</span><br></pre></td></tr></table></figure>
+
+<p>安装依赖</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装依赖，依赖源自ChatGLM2-6B-int4 HF readme</span></span><br><span class="line">pip install protobuf transformers==4.30.2 cpm_kernels torch==2.0.1 gradio mdtex2html sentencepiece accelerate</span><br></pre></td></tr></table></figure>
+
+<h3 id="Test-ChatGLM2"><a href="#Test-ChatGLM2" class="headerlink" title="Test ChatGLM2"></a>Test ChatGLM2</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, AutoModel</span><br><span class="line"><span class="comment"># 这里将THUDM/chatglm2-6b-int4 更换为刚模型下载存放的路径，</span></span><br><span class="line"><span class="comment"># 否则会自动去重新下载模型到~/.cache/目录下</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">&quot;THUDM/chatglm2-6b-int4&quot;</span>, trust_remote_code=<span class="literal">True</span>)</span><br><span class="line">model = AutoModel.from_pretrained(<span class="string">&quot;THUDM/chatglm2-6b-int4&quot;</span>, trust_remote_code=<span class="literal">True</span>).half().cuda()</span><br><span class="line">model = model.<span class="built_in">eval</span>()</span><br><span class="line">response, history = model.chat(tokenizer, <span class="string">&quot;你好&quot;</span>, history=[])</span><br><span class="line"><span class="built_in">print</span>(response)</span><br><span class="line"></span><br><span class="line">t = time.time()</span><br><span class="line">response, history = model.chat(tokenizer, <span class="string">&quot;晚上睡不着应该怎么办&quot;</span>, history=history)</span><br><span class="line"><span class="built_in">print</span>(response)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;coast:<span class="subst">&#123;time.time() - t:<span class="number">.4</span>f&#125;</span>s&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">你好👋！我是人工智能助手 ChatGLM2-6B，很高兴见到你，欢迎问我任何问题。</span><br><span class="line">睡眠对身体健康和心理健康非常重要。如果晚上睡不着，可以尝试以下一些方法:</span><br><span class="line"></span><br><span class="line">1. 放松自己:在睡觉前数绵羊或做一些轻松的伸展运动，可以帮助放松自己。也可以尝试使用温和的瑜伽或伸展练习，缓解身体的紧张。</span><br><span class="line"></span><br><span class="line">2. 创建一个舒适的睡眠环境:确保卧室安静、黑暗、凉爽和舒适。如果卧室中存在噪音或强光，可以考虑使用耳塞或眼罩。</span><br><span class="line"></span><br><span class="line">3. 避免使用电子产品:在睡觉前一小时避免使用电子产品，如手机、电视或电脑。这些设备发出的蓝光会影响睡眠质量。</span><br><span class="line"></span><br><span class="line">4. 建立一个固定的睡眠时间表:保持固定的睡眠时间表可以帮助身体建立一个正常的睡眠节律。尽量在每天相同的时间上床和起床。</span><br><span class="line"></span><br><span class="line">5. 避免饮用刺激性饮料:在睡觉前几小时避免饮用咖啡、茶、酒或含有巧克力等刺激性饮料。</span><br><span class="line"></span><br><span class="line">如果这些方法无效，可以考虑咨询医生以了解可能的原因。</span><br><span class="line">coast:12.4483s</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就使用官方的样例代码简单的使用ChatGLM进行推理对话了。接下来让我们可以简单的封装一下，更优美地使用ChatGLM2！</p>
+<h2 id="FastAPI-Deploy-ChatGLM2"><a href="#FastAPI-Deploy-ChatGLM2" class="headerlink" title="FastAPI Deploy ChatGLM2"></a>FastAPI Deploy ChatGLM2</h2><p>上面我们已经学会了下载模型，然后进行简单的模型对话推理。接下来使用我们使用FastAPI可以将模型部署到服务器上，以接口方式进行对话。注意这里的API仅仅是简单封装，不同于FastChat类OpenAPI提供的接口。</p>
+<blockquote>
+<p>FastAPI: <a class="link"   target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/" >https://fastapi.tiangolo.com/<i class="fas fa-external-link-alt"></i></a></p>
+</blockquote>
+<p>以下代码已经不太规范，只是一个流式调用ChatGLM2 API的方式，建议使用ChatGLM2官方提供的样例代码部署测试，或者式后文的FastChat方式！</p>
+<blockquote>
+<p>ChatGLM2-6B: <a class="link"   target="_blank" rel="noopener" href="https://github.com/THUDM/ChatGLM2-6B" >https://github.com/THUDM/ChatGLM2-6B<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/THUDM/ChatGLM2-6B/blob/main/openai_api.py" >https://github.com/THUDM/ChatGLM2-6B/blob/main/openai_api.py<i class="fas fa-external-link-alt"></i></a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">File Name:chatglm2-6b-stream-api.py</span></span><br><span class="line"><span class="string">Author:LongerKing</span></span><br><span class="line"><span class="string">Time:2023/8/15 13:33</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, AutoModel</span><br><span class="line"><span class="keyword">from</span> fastapi.middleware.cors <span class="keyword">import</span> CORSMiddleware</span><br><span class="line"><span class="keyword">from</span> sse_starlette.sse <span class="keyword">import</span> ServerSentEvent, EventSourceResponse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getLogger</span>(<span class="params">name, file_name, use_formatter=<span class="literal">True</span></span>):</span><br><span class="line">    logger = logging.getLogger(name)</span><br><span class="line">    logger.setLevel(logging.INFO)</span><br><span class="line">    console_handler = logging.StreamHandler(sys.stdout)</span><br><span class="line">    formatter = logging.Formatter(<span class="string">&#x27;%(asctime)s    %(message)s&#x27;</span>)</span><br><span class="line">    console_handler.setFormatter(formatter)</span><br><span class="line">    console_handler.setLevel(logging.INFO)</span><br><span class="line">    logger.addHandler(console_handler)</span><br><span class="line">    <span class="keyword">if</span> file_name:</span><br><span class="line">        handler = logging.FileHandler(file_name, encoding=<span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line">        handler.setLevel(logging.INFO)</span><br><span class="line">        <span class="keyword">if</span> use_formatter:</span><br><span class="line">            formatter = logging.Formatter(<span class="string">&#x27;%(asctime)s - %(name)s - %(message)s&#x27;</span>)</span><br><span class="line">            handler.setFormatter(formatter)</span><br><span class="line">        logger.addHandler(handler)</span><br><span class="line">    <span class="keyword">return</span> logger</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">logger = getLogger(<span class="string">&#x27;ChatGLM&#x27;</span>, <span class="string">&#x27;chatlog.log&#x27;</span>)</span><br><span class="line"></span><br><span class="line">MAX_HISTORY = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatGLM</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        logger.info(<span class="string">&quot;Start initialize model...&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.tokenizer = AutoTokenizer.from_pretrained(</span><br><span class="line">            <span class="string">&quot;/home/bigdata/wonders/wanglang/models/chatglm2-6b-cmeee_eie001&quot;</span>, trust_remote_code=<span class="literal">True</span>)</span><br><span class="line">        <span class="variable language_">self</span>.model = AutoModel.from_pretrained(<span class="string">&quot;/home/bigdata/wonders/wanglang/models/chatglm2-6b-cmeee_eie001&quot;</span>,</span><br><span class="line">                                               trust_remote_code=<span class="literal">True</span>).quantize(<span class="number">8</span>).cuda()</span><br><span class="line">        <span class="variable language_">self</span>.model.<span class="built_in">eval</span>()</span><br><span class="line">        logger.info(<span class="string">&quot;Model initialization finished.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">clear</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">            <span class="keyword">with</span> torch.cuda.device(<span class="string">f&quot;cuda:<span class="subst">&#123;args.device&#125;</span>&quot;</span>):</span><br><span class="line">                torch.cuda.empty_cache()</span><br><span class="line">                torch.cuda.ipc_collect()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">answer</span>(<span class="params">self, query: <span class="built_in">str</span>, history</span>):</span><br><span class="line">        response, history = <span class="variable language_">self</span>.model.chat(<span class="variable language_">self</span>.tokenizer, query, history=history)</span><br><span class="line">        history = [<span class="built_in">list</span>(h) <span class="keyword">for</span> h <span class="keyword">in</span> history]</span><br><span class="line">        <span class="keyword">return</span> response, history</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">stream</span>(<span class="params">self, query, history</span>):</span><br><span class="line">        <span class="keyword">if</span> query <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> history <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">yield</span> &#123;<span class="string">&quot;query&quot;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&quot;response&quot;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&quot;history&quot;</span>: [], <span class="string">&quot;finished&quot;</span>: <span class="literal">True</span>&#125;</span><br><span class="line">        size = <span class="number">0</span></span><br><span class="line">        response = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> response, history <span class="keyword">in</span> <span class="variable language_">self</span>.model.stream_chat(<span class="variable language_">self</span>.tokenizer, query, history):</span><br><span class="line">            this_response = response[size:]</span><br><span class="line">            history = [<span class="built_in">list</span>(h) <span class="keyword">for</span> h <span class="keyword">in</span> history]</span><br><span class="line">            size = <span class="built_in">len</span>(response)</span><br><span class="line">            <span class="keyword">yield</span> &#123;<span class="string">&quot;delta&quot;</span>: this_response, <span class="string">&quot;response&quot;</span>: response, <span class="string">&quot;finished&quot;</span>: <span class="literal">False</span>&#125;</span><br><span class="line">        logger.info(<span class="string">&quot;Answer - &#123;&#125;&quot;</span>.<span class="built_in">format</span>(response))</span><br><span class="line">        <span class="keyword">yield</span> &#123;<span class="string">&quot;query&quot;</span>: query, <span class="string">&quot;delta&quot;</span>: <span class="string">&quot;[EOS]&quot;</span>, <span class="string">&quot;response&quot;</span>: response, <span class="string">&quot;history&quot;</span>: history, <span class="string">&quot;finished&quot;</span>: <span class="literal">True</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">start_server</span>(<span class="params">http_address: <span class="built_in">str</span>, port: <span class="built_in">int</span>, gpu_id: <span class="built_in">str</span></span>):</span><br><span class="line">    os.environ[<span class="string">&#x27;CUDA_DEVICE_ORDER&#x27;</span>] = <span class="string">&#x27;PCI_BUS_ID&#x27;</span></span><br><span class="line">    os.environ[<span class="string">&#x27;CUDA_VISIBLE_DEVICES&#x27;</span>] = gpu_id</span><br><span class="line"></span><br><span class="line">    bot = ChatGLM()</span><br><span class="line"></span><br><span class="line">    app = FastAPI()</span><br><span class="line">    app.add_middleware(CORSMiddleware,</span><br><span class="line">                       allow_origins=[<span class="string">&quot;*&quot;</span>],</span><br><span class="line">                       allow_credentials=<span class="literal">True</span>,</span><br><span class="line">                       allow_methods=[<span class="string">&quot;*&quot;</span>],</span><br><span class="line">                       allow_headers=[<span class="string">&quot;*&quot;</span>]</span><br><span class="line">                       )</span><br><span class="line"></span><br><span class="line"><span class="meta">    @app.get(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&#x27;message&#x27;</span>: <span class="string">&#x27;started&#x27;</span>, <span class="string">&#x27;success&#x27;</span>: <span class="literal">True</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">    @app.post(<span class="params"><span class="string">&quot;/chat&quot;</span></span>)</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">answer_question</span>(<span class="params">arg_dict: <span class="built_in">dict</span></span>):</span><br><span class="line">        result = &#123;<span class="string">&quot;query&quot;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&quot;response&quot;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&quot;success&quot;</span>: <span class="literal">False</span>&#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            text = arg_dict[<span class="string">&quot;query&quot;</span>]</span><br><span class="line">            ori_history = arg_dict[<span class="string">&quot;history&quot;</span>]</span><br><span class="line">            logger.info(<span class="string">&quot;Query - &#123;&#125;&quot;</span>.<span class="built_in">format</span>(text))</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(ori_history) &gt; <span class="number">0</span>:</span><br><span class="line">                logger.info(<span class="string">&quot;History - &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ori_history))</span><br><span class="line">            history = ori_history[-MAX_HISTORY:]</span><br><span class="line">            history = [<span class="built_in">tuple</span>(h) <span class="keyword">for</span> h <span class="keyword">in</span> history]</span><br><span class="line">            response, history = bot.answer(text, history)</span><br><span class="line">            logger.info(<span class="string">&quot;Answer - &#123;&#125;&quot;</span>.<span class="built_in">format</span>(response))</span><br><span class="line">            ori_history.append((text, response))</span><br><span class="line">            result = &#123;<span class="string">&quot;query&quot;</span>: text, <span class="string">&quot;response&quot;</span>: response,</span><br><span class="line">                      <span class="string">&quot;history&quot;</span>: ori_history, <span class="string">&quot;success&quot;</span>: <span class="literal">True</span>&#125;</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;error: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="meta">    @app.post(<span class="params"><span class="string">&quot;/stream&quot;</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">answer_question_stream</span>(<span class="params">arg_dict: <span class="built_in">dict</span></span>):</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">decorate</span>(<span class="params">generator</span>):</span><br><span class="line">            <span class="keyword">for</span> item <span class="keyword">in</span> generator:</span><br><span class="line">                <span class="keyword">yield</span> ServerSentEvent(json.dumps(item, ensure_ascii=<span class="literal">False</span>), event=<span class="string">&#x27;delta&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            text = arg_dict[<span class="string">&quot;query&quot;</span>]</span><br><span class="line">            ori_history = arg_dict[<span class="string">&quot;history&quot;</span>]</span><br><span class="line">            logger.info(<span class="string">&quot;Query - &#123;&#125;&quot;</span>.<span class="built_in">format</span>(text))</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(ori_history) &gt; <span class="number">0</span>:</span><br><span class="line">                logger.info(<span class="string">&quot;History - &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ori_history))</span><br><span class="line">            history = ori_history[-MAX_HISTORY:]</span><br><span class="line">            history = [<span class="built_in">tuple</span>(h) <span class="keyword">for</span> h <span class="keyword">in</span> history]</span><br><span class="line">            <span class="keyword">return</span> EventSourceResponse(decorate(bot.stream(text, history)))</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;error: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> EventSourceResponse(decorate(bot.stream(<span class="literal">None</span>, <span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @app.get(<span class="params"><span class="string">&quot;/free_gc&quot;</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">free_gpu_cache</span>():</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            bot.clear()</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="string">&quot;success&quot;</span>: <span class="literal">True</span>&#125;</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;error: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="string">&quot;success&quot;</span>: <span class="literal">False</span>&#125;</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">&quot;starting server...&quot;</span>)</span><br><span class="line">    uvicorn.run(app=app, host=http_address, port=port, workers=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line"></span><br><span class="line">    parser = argparse.ArgumentParser(description=<span class="string">&#x27;Stream API Service for ChatGLM2-6B&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--device&#x27;</span>, <span class="string">&#x27;-d&#x27;</span>, <span class="built_in">help</span>=<span class="string">&#x27;device，-1 means cpu, other means gpu ids&#x27;</span>, default=<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--host&#x27;</span>, <span class="string">&#x27;-H&#x27;</span>, <span class="built_in">help</span>=<span class="string">&#x27;host to listen&#x27;</span>, default=<span class="string">&#x27;0.0.0.0&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--port&#x27;</span>, <span class="string">&#x27;-P&#x27;</span>, <span class="built_in">help</span>=<span class="string">&#x27;port of this service&#x27;</span>, default=<span class="number">8000</span>)</span><br><span class="line">    args = parser.parse_args()</span><br><span class="line">    start_server(args.host, <span class="built_in">int</span>(args.port), args.device)</span><br></pre></td></tr></table></figure>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                ChatGLM-Using
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2023/08/15/chatglm-using/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    作者
+                </div>
+                <div class="content">longerking</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    发布于
+                </div>
+                <div class="content">2023-08-15 23:36</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    许可
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="复制版权信息" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/longerking-blogs/tags/LLMs/">LLMs</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/longerking-blogs/2023/08/15/chatglm-deploy-fastchat/"
+                                   title="ChatGLM-Deploy-FastChat"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">ChatGLM-Deploy-FastChat</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/longerking-blogs/2023/07/16/my-site-starter/"
+                                   title="My Site GitHub Pages Starter"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">My Site GitHub Pages Starter</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'longerking/longerking-blogs')
+              script.setAttribute('data-repo-id', 'R_kgDOJ8DDFw')
+              script.setAttribute('data-category', 'General')
+              script.setAttribute('data-category-id', 'DIC_kwDOJ8DDF84CYoZz')
+              script.setAttribute('data-reactions-enabled', '1')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ChatGLM-Using"><span class="nav-number">1.</span> <span class="nav-text">ChatGLM-Using</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChatGLM2-6B"><span class="nav-number">1.2.</span> <span class="nav-text">ChatGLM2-6B</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">1.2.1.</span> <span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HardWare-Requirements"><span class="nav-number">1.2.2.</span> <span class="nav-text">HardWare Requirements</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DownLoad-Models"><span class="nav-number">1.2.3.</span> <span class="nav-text">DownLoad Models</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-ChatGLM2"><span class="nav-number">1.2.4.</span> <span class="nav-text">Test ChatGLM2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastAPI-Deploy-ChatGLM2"><span class="nav-number">1.3.</span> <span class="nav-text">FastAPI Deploy ChatGLM2</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2020</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/longerking-blogs/">longerking</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ChatGLM-Using"><span class="nav-number">1.</span> <span class="nav-text">ChatGLM-Using</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChatGLM2-6B"><span class="nav-number">1.2.</span> <span class="nav-text">ChatGLM2-6B</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">1.2.1.</span> <span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HardWare-Requirements"><span class="nav-number">1.2.2.</span> <span class="nav-text">HardWare Requirements</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DownLoad-Models"><span class="nav-number">1.2.3.</span> <span class="nav-text">DownLoad Models</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-ChatGLM2"><span class="nav-number">1.2.4.</span> <span class="nav-text">Test ChatGLM2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastAPI-Deploy-ChatGLM2"><span class="nav-number">1.3.</span> <span class="nav-text">FastAPI Deploy ChatGLM2</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/longerking-blogs/js/utils.js"></script>
+
+<script src="/longerking-blogs/js/header-shrink.js"></script>
+
+<script src="/longerking-blogs/js/back2top.js"></script>
+
+<script src="/longerking-blogs/js/toggle-theme.js"></script>
+
+<script src="/longerking-blogs/js/code-block.js"></script>
+
+<script src="/longerking-blogs/js/main.js"></script>
+
+<script src="/longerking-blogs/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/longerking-blogs/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/longerking-blogs/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/longerking-blogs/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/longerking-blogs/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/longerking-blogs/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+    
+<script src="//cdn.jsdelivr.net/npm/mermaid@10.5.0/dist/mermaid.min.js"></script>
+
+    <script data-pjax>
+      if (window.mermaid) {
+        mermaid.init()
+      }
+    </script>
+
+
+
+
+
+
+<!-- pjax -->
+
+    
+<script src="/longerking-blogs/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

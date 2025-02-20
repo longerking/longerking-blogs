@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="利用FastChat部署ChatGLM2">
+    <meta name="author" content="longerking">
+    
+    <title>
+        
+            ChatGLM-Deploy-FastChat |
+        
+        LongerKing-Blogs
+    </title>
+    
+<link rel="stylesheet" href="/longerking-blogs/css/style.css">
+
+    
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"longerking.github.io","root":"/longerking-blogs/","language":"zh-CN","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"title":"LongerKing-Blogs","author":"longerking","url":"https://longerking.github.io/longerking-blogs"},"menu":{"Home":"/","Archives":"/archives","Tags":"/tags","Categories":"/categories","About":"/about"},"first_screen":{"enable":false,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":false},"social_contact":{"enable":false,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"facebook":null,"email":null}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":false,"tag":false,"post_datetime":"updated"},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"enable":true,"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","img_align":"left","copyright_info":true},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.8"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":"longerking/longerking-blogs","repo_id":"R_kgDOJ8DDFw","category":"General","category_id":"DIC_kwDOJ8DDF84CYoZz","reactions_enabled":true}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"jsdelivr"},"pjax":{"enable":true},"footer":{"since":2020,"word_count":false,"icp":{"enable":false,"record_code":null,"url":"https://beian.miit.gov.cn"},"site_deploy":{"enable":false,"provider":"github","url":null},"shields_style":{"enable":false,"custom":[{"link_url":null,"img_url":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"/longerking-blogs","style":{"primary_color":"#0066cc","logo":"/images/logo.svg","favicon":"/images/logo.svg","avatar":"/images/avatar.svg","font_size":null,"font_family":null,"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"header_transparent":false,"background_img":"/images/bg.svg","description":"Just Work for Life! ||  Be Your Longer King!","font_color":null,"hitokoto":false},"scroll":{"progress_bar":true,"percent":false}},"home_article":{"category":{"enable":true,"limit":3},"tag":{"enable":true,"limit":5}},"source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+            <a class="site-name border-box" href="/longerking-blogs/">
+               LongerKing-Blogs
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/">
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/archives">
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/tags">
+                                
+                                标签
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/categories">
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/about">
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/">
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/archives">
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/tags">
+                            
+                            标签
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/categories">
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/about">
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        ChatGLM-Deploy-FastChat
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">longerking</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2023-08-15 23:56:33</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Tue Aug 15 2023 16:00:11 GMT+0000">2023-08-15 16:00:11</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/longerking-blogs/categories/LLMs/">LLMs</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/longerking-blogs/tags/LLMs/">LLMs</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>1.8k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>8 分钟</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h1 id="ChatGLM-Deploy-FastChat"><a href="#ChatGLM-Deploy-FastChat" class="headerlink" title="ChatGLM-Deploy-FastChat"></a>ChatGLM-Deploy-FastChat</h1><p>利用FastChat部署ChatGLM</p>
+<p>Reference</p>
+<blockquote>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/lm-sys/FastChathttps://github.com/lm-sys/FastChat/blob/main/docs/openai/_api.md" >https://github.com/lm-sys/FastChathttps://github.com/lm-sys/FastChat/blob/main/docs/openai\_api.md<i class="fas fa-external-link-alt"></i></a></p>
+</blockquote>
+<p><br><code>Note</code>： 一些screen窗口会话知识预备</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">screen <span class="literal">-S</span> fs<span class="literal">-glm-wkr</span> <span class="comment"># 创建一个名为fs-glm-wkr的会话</span></span><br><span class="line"><span class="comment"># ctrl+shift+d # 退出当前会话窗口，但会话内容保持后台</span></span><br><span class="line">screen <span class="literal">-r</span> fs<span class="literal">-glm-wkr</span> <span class="comment"># 连接到 fs-glm-wkr 会话窗口</span></span><br><span class="line"><span class="comment"># ctrl+d # 退出会话窗口，并停止整个窗口内程序</span></span><br><span class="line">screen <span class="literal">-ls</span> <span class="comment"># 查看所有会话窗口</span></span><br><span class="line">screen <span class="literal">-D</span> <span class="literal">-r</span> fs<span class="literal">-glm-wkr</span> <span class="comment"># 强制重连已经Attacted状态的窗口</span></span><br></pre></td></tr></table></figure>
+
+<p>\</p>
+<h3 id="Install-FastChat"><a href="#Install-FastChat" class="headerlink" title="Install FastChat"></a>Install FastChat</h3><p>使用依赖包安装或者使用源码安装，二选一即可。如果FastChat还不支持的模型，建议使用源码安装，再源码集成支持模型后在源码安装依赖包。 <code>Note</code>: FastChat支持对接chatglm是因为源码中，已经做了这部分的配置集成。这里的测试使用pip安装。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pip3 install fschat</span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">git clone https://github.com/lm<span class="literal">-sys</span>/FastChat.git</span><br><span class="line"><span class="built_in">cd</span> FastChat</span><br><span class="line">pip3 install <span class="literal">--upgrade</span> pip  <span class="comment"># enable PEP 660 support</span></span><br><span class="line">pip3 install <span class="literal">-e</span> .</span><br></pre></td></tr></table></figure>
+
+<p>\</p>
+<h3 id="Load-Models"><a href="#Load-Models" class="headerlink" title="Load Models"></a>Load Models</h3><p>服务器部署模型，并提供l类似gpt 的 openai 接口方式访问。</p>
+<ol>
+<li><h4 id="Use-serve-cli-testing-model"><a href="#Use-serve-cli-testing-model" class="headerlink" title="Use serve.cli testing model"></a>Use serve.cli testing model</h4></li>
+</ol>
+<p>cli运行脚本如下</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 <span class="literal">-m</span> fastchat.serve.cli \</span><br><span class="line">        <span class="literal">--model-path</span> /mnt/models/chatglm2<span class="literal">-6b</span></span><br></pre></td></tr></table></figure>
+
+<p>如图，会在终端生成如下交互问答</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">(chatglm)longer@codeWL<span class="variable">$</span> python3 <span class="literal">-m</span> fastchat.serve.cli <span class="literal">--model-path</span> /mnt/models/chatglm2<span class="literal">-6b</span></span><br><span class="line">Loading checkpoint shards: <span class="number">100</span>%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| <span class="number">16</span>/<span class="number">16</span> [<span class="number">00</span>:<span class="number">13</span>&lt;<span class="number">00</span>:<span class="number">00</span>,  <span class="number">1.18</span><span class="type">it</span>/<span class="type">s</span>]</span><br><span class="line">问: 你是谁？</span><br><span class="line">答: 我是一个名为 ChatGLM2<span class="literal">-6B</span> 的人工智能助手，是基于清华大学 KEG 实验室和智谱 AI 公司于 <span class="number">2023</span> 年共同训练的语言模型开发的。我的任务是针对用户的问题和要求提供适当的答复和支持。</span><br><span class="line">问: 如何使用fastchat</span><br><span class="line">答: Fastchat 是一个基于 Python 的聊天应用程序，可以使用它进行文本或语音聊天。要使用 Fastchat，您需要首先安装它。在终端中输入以下命令来安装 Fastchat：</span><br><span class="line">```</span><br><span class="line">pip install fastchat</span><br><span class="line">```</span><br><span class="line">安装完成后，您可以运行以下命令启动 Fastchat：</span><br><span class="line">```</span><br><span class="line">fastchat</span><br><span class="line">```</span><br><span class="line">然后，您可以通过输入 <span class="string">&quot;你好&quot;</span> 来启动 Fastchat 的语音聊天功能。</span><br><span class="line">```</span><br><span class="line">fastchat 你好</span><br><span class="line">```</span><br><span class="line">在 Fastchat 中，您可以向对方发送文本消息或语音消息。在发送文本消息时，您可以使用 emoji 表情符号和表情符来使消息更加生动。例如，要发送一个带有开心表情的表情符号，您可以使用以下代码：</span><br><span class="line">```</span><br><span class="line">fastchat :(</span><br><span class="line">```</span><br><span class="line">要发送一个带有哭泣表情的表情符号，您可以使用以下代码：</span><br><span class="line">```</span><br><span class="line">fastchat :<span class="string">&#x27;(</span></span><br><span class="line"><span class="string">```</span></span><br><span class="line"><span class="string">此外，Fastchat 还支持发送语音消息。要发送语音消息，请首先请确保您的计算机已安装了浏览器，并将 Fastchat 的语音消息 URL 复制到浏览器中。然后，您可以使用以下代码发送语音消息：</span></span><br><span class="line"><span class="string">```</span></span><br><span class="line"><span class="string">fastchat :(4437912：您想说什么</span></span><br><span class="line"><span class="string">```</span></span><br><span class="line"><span class="string">这将在您的计算机上打开一个浏览器，并在 Fastchat 中显示您输入的语音消息。</span></span><br><span class="line"><span class="string">问:</span></span><br></pre></td></tr></table></figure>
+
+<p>\</p>
+<ol start="2">
+<li><h4 id="serve-controller-for-RESTful-API-Server"><a href="#serve-controller-for-RESTful-API-Server" class="headerlink" title="serve.controller for RESTful API Server"></a>serve.controller for RESTful API Server</h4></li>
+</ol>
+<p><strong>First Lunch a fastchat.serve.controller。</strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># screen -S fs-glm-ctl</span></span><br><span class="line">python3 <span class="literal">-m</span> fastchat.serve.controller</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出如下</span></span><br><span class="line">(chatglm)longer@codeWL<span class="variable">$</span> python3 <span class="literal">-m</span> fastchat.serve.controller</span><br><span class="line"><span class="number">2023</span><span class="literal">-08-01</span> <span class="number">07</span>:<span class="number">15</span>:<span class="number">20</span> | INFO | controller | args: Namespace(host=<span class="string">&#x27;localhost&#x27;</span>, port=<span class="number">21001</span>, dispatch_method=<span class="string">&#x27;shortest_queue&#x27;</span>)</span><br><span class="line"><span class="number">2023</span><span class="literal">-08-01</span> <span class="number">07</span>:<span class="number">15</span>:<span class="number">20</span> | ERROR | stderr | INFO:     Started server <span class="keyword">process</span> [<span class="number">18496</span>]</span><br><span class="line"><span class="number">2023</span><span class="literal">-08-01</span> <span class="number">07</span>:<span class="number">15</span>:<span class="number">20</span> | ERROR | stderr | INFO:     Waiting <span class="keyword">for</span> application startup.</span><br><span class="line"><span class="number">2023</span><span class="literal">-08-01</span> <span class="number">07</span>:<span class="number">15</span>:<span class="number">20</span> | ERROR | stderr | INFO:     Application startup complete.</span><br><span class="line"><span class="number">2023</span><span class="literal">-08-01</span> <span class="number">07</span>:<span class="number">15</span>:<span class="number">20</span> | ERROR | stderr | INFO:     Uvicorn running on http://localhost:<span class="number">21001</span> (Press CTRL+C to quit)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Then, launch the model worker(s)</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  screen -S fs-glm-wkr</span></span><br><span class="line">python3 -m fastchat.serve.model_worker --model-path /mnt/models/chatglm2-6b</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>\</p>
+<p><strong>Finally, launch the RESTful API server</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash"> screen -S fs-glm-api</span></span><br><span class="line">python3 -m fastchat.serve.openai_api_server --host localhost --port 8000</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">localhost 建议使用局域网或者公网地址，这是对外的api接口</span></span><br></pre></td></tr></table></figure>
+
+<p><br><code>Note</code>: 以上三个步骤都是必须按照步骤全部执行。可以使用screen session会话依次后台执行这些服务。\</p>
+<p><strong>Launch the Gradio web server</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用fastchat gradio页面来查看加载的模型</span></span><br><span class="line"><span class="comment"># screen -S fs-glm-grd</span></span><br><span class="line">python3 -m fastchat.serve.gradio_web_server</span><br><span class="line"><span class="comment"># ... </span></span><br><span class="line"><span class="comment"># Running on local URL:  http://0.0.0.0:7860</span></span><br><span class="line"><span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
+<p>Grade web Page：上面的model_worker只选择了一个，所以这里只显示已经加载的模型。如果要支持多个模型可以看下文的<strong>Running Mutiple</strong>，当然这个也需要显存支持。</p>
+<h3 id="Test-APIs"><a href="#Test-APIs" class="headerlink" title="Test APIs"></a>Test APIs</h3><h4 id="Interact-with-mode（OpenAI方式）"><a href="#Interact-with-mode（OpenAI方式）" class="headerlink" title="Interact with mode（OpenAI方式）"></a>Interact with mode（OpenAI方式）</h4><blockquote>
+<p><a class="link"   target="_blank" rel="noopener" href="http://hostserver:8000/v1/" >http://hostserver:8000/v1/<i class="fas fa-external-link-alt"></i></a></p>
+</blockquote>
+<p>运行 <code>chatglm.py</code> 脚本会得到如下的ResponseText</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(chatai) <span class="built_in">PS</span> E:\TestGLM\src&gt; python chatglm.py</span><br><span class="line">你好，作为一名人工智能助手，我无法感受到情感，但我可以提供帮助。 请问有什么问题我可以解答吗？</span><br><span class="line">Hello! My name is Noxix. I am an AI chatbot designed to assist you with any questions or tasks you may have. How can I help you today?</span><br></pre></td></tr></table></figure>
+
+<p><code>chatglm.py</code> 内容如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pip install --upgrade openai</span></span><br><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"><span class="comment"># to get proper authentication, make sure to use a valid key that&#x27;s listed in</span></span><br><span class="line"><span class="comment"># the --api-keys flag. if no flag value is provided, the `api_key` will be ignored.</span></span><br><span class="line">openai.api_key = <span class="string">&quot;EMPTY&quot;</span></span><br><span class="line">openai.api_base = <span class="string">&quot;http://yourserverip:8000/v1&quot;</span></span><br><span class="line"></span><br><span class="line">model = <span class="string">&quot;chatglm2-6b&quot;</span>  <span class="comment"># 模型文件地址，文件夹名字</span></span><br><span class="line">prompt = <span class="string">&quot;你好&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># create a completion</span></span><br><span class="line">completion = openai.Completion.create(model=model, prompt=prompt, max_tokens=<span class="number">64</span>)</span><br><span class="line"><span class="comment"># print the completion</span></span><br><span class="line"><span class="built_in">print</span>(prompt + completion.choices[<span class="number">0</span>].text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># create a chat completion</span></span><br><span class="line">completion = openai.ChatCompletion.create(</span><br><span class="line">  model=model,</span><br><span class="line">  messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;Hello! What is your name?&quot;</span>&#125;]</span><br><span class="line">)</span><br><span class="line"><span class="comment"># print the completion</span></span><br><span class="line"><span class="built_in">print</span>(completion.choices[<span class="number">0</span>].message.content)</span><br><span class="line"></span><br><span class="line"><span class="comment">#########################类似opena的代码##################################</span></span><br><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create</span>(<span class="params">**args</span>):</span><br><span class="line">    openai.api_key = <span class="string">&quot;EMPTY&quot;</span></span><br><span class="line">    openai.api_base = <span class="string">&quot;http://hostserver:8000/v1&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        result = openai.ChatCompletion.create(**args)</span><br><span class="line">    <span class="keyword">except</span> openai.error.RateLimitError:</span><br><span class="line">        result = create(**args)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">chat</span>(<span class="params">mess</span>):</span><br><span class="line">    responde = create(</span><br><span class="line">        model=<span class="string">&quot;chatglm2-6b&quot;</span>,</span><br><span class="line">        messages=mess</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    res = responde[<span class="string">&#x27;choices&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;message&#x27;</span>][<span class="string">&#x27;content&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h4 id="List-Models"><a href="#List-Models" class="headerlink" title="List Models"></a>List Models</h4><blockquote>
+<p><a class="link"   target="_blank" rel="noopener" href="http://hostserver:8000/v1/models" >http://hostserver:8000/v1/models<i class="fas fa-external-link-alt"></i></a></p>
+</blockquote>
+<p>Using CMD <code>curl http://hostserver:8000/v1/models</code>， then</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// curl http://hostserver:8000/v1/models</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;object&quot;</span><span class="punctuation">:</span> <span class="string">&quot;list&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;chatglm2-6b&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;object&quot;</span><span class="punctuation">:</span> <span class="string">&quot;model&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;created&quot;</span><span class="punctuation">:</span> <span class="number">1690876019</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;owned_by&quot;</span><span class="punctuation">:</span> <span class="string">&quot;fastchat&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;root&quot;</span><span class="punctuation">:</span> <span class="string">&quot;chatglm2-6b&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;parent&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">null</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;permission&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;modelperm-37FkwejmTx3qArXrHS5uSv&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;object&quot;</span><span class="punctuation">:</span> <span class="string">&quot;model_permission&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;created&quot;</span><span class="punctuation">:</span> <span class="number">1690876019</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;allow_create_engine&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;allow_sampling&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;allow_logprobs&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;allow_search_indices&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;allow_view&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;allow_fine_tuning&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;organization&quot;</span><span class="punctuation">:</span> <span class="string">&quot;*&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;group&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">null</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;is_blocking&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Chat-Completions"><a href="#Chat-Completions" class="headerlink" title="Chat Completions"></a>Chat Completions</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:8000/v1/chat/completions \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;    &quot;model&quot;: &quot;vicuna-7b-v1.3&quot;,    &quot;messages&quot;: [&#123;&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello! What is your name?&quot;&#125;]  &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Text-Completions"><a href="#Text-Completions" class="headerlink" title="Text Completions"></a>Text Completions</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:8000/v1/completions \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;    &quot;model&quot;: &quot;vicuna-7b-v1.3&quot;,    &quot;prompt&quot;: &quot;Once upon a time&quot;,    &quot;max_tokens&quot;: 41,    &quot;temperature&quot;: 0.5  &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Embeddings"><a href="#Embeddings" class="headerlink" title="Embeddings:"></a>Embeddings:</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:8000/v1/embeddings \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;    &quot;model&quot;: &quot;vicuna-7b-v1.3&quot;,    &quot;input&quot;: &quot;Hello world!&quot;  &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Running-Multiple（TODO-TEST-多模型加载）"><a href="#Running-Multiple（TODO-TEST-多模型加载）" class="headerlink" title="Running Multiple（TODO TEST 多模型加载）"></a>Running Multiple（TODO TEST 多模型加载）</h3><p>If you want to run multiple models on the same machine and in the same process, you can replace the <code>model_worker</code> step above with a multi model variant:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># screen -r fs-glm-wkr</span></span><br><span class="line"></span><br><span class="line">python3 -m fastchat.serve.multi_model_worker \</span><br><span class="line">    --model-path /mnt/models/chatglm2-6b-ptune \</span><br><span class="line">    --model-names chatglm2-6b-ptune</span><br><span class="line">    --model-path /mnt/models/chatglm2-6b \</span><br><span class="line">    --model-names chatglm2-6b </span><br></pre></td></tr></table></figure>
+
+<p><code>Note</code> 同时加载多个模型，设置模型名称路径即可，需要显存支持。这里尝试运行了两个ChatGLM以及微调ChatGLM, 显然24G的显存不支持同时运行两个。故之后的测试步骤暂不摘录。<br>接下来就愉快的使用openai去对接chatglm应用吧。</p>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                ChatGLM-Deploy-FastChat
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2023/08/15/chatglm-deploy-fastchat/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    作者
+                </div>
+                <div class="content">longerking</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    发布于
+                </div>
+                <div class="content">2023-08-15 23:56</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    许可
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="复制版权信息" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/longerking-blogs/tags/LLMs/">LLMs</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/longerking-blogs/2024/09/19/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98/"
+                                   title="进程间通信-共享内存"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">进程间通信-共享内存</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/longerking-blogs/2023/08/15/chatglm-using/"
+                                   title="ChatGLM-Using"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">ChatGLM-Using</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'longerking/longerking-blogs')
+              script.setAttribute('data-repo-id', 'R_kgDOJ8DDFw')
+              script.setAttribute('data-category', 'General')
+              script.setAttribute('data-category-id', 'DIC_kwDOJ8DDF84CYoZz')
+              script.setAttribute('data-reactions-enabled', '1')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ChatGLM-Deploy-FastChat"><span class="nav-number">1.</span> <span class="nav-text">ChatGLM-Deploy-FastChat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-FastChat"><span class="nav-number">1.0.1.</span> <span class="nav-text">Install FastChat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Load-Models"><span class="nav-number">1.0.2.</span> <span class="nav-text">Load Models</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Use-serve-cli-testing-model"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">Use serve.cli testing model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#serve-controller-for-RESTful-API-Server"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">serve.controller for RESTful API Server</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-APIs"><span class="nav-number">1.0.3.</span> <span class="nav-text">Test APIs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Interact-with-mode%EF%BC%88OpenAI%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">Interact with mode（OpenAI方式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#List-Models"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">List Models</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Chat-Completions"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">Chat Completions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Text-Completions"><span class="nav-number">1.0.3.4.</span> <span class="nav-text">Text Completions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Embeddings"><span class="nav-number">1.0.3.5.</span> <span class="nav-text">Embeddings:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Running-Multiple%EF%BC%88TODO-TEST-%E5%A4%9A%E6%A8%A1%E5%9E%8B%E5%8A%A0%E8%BD%BD%EF%BC%89"><span class="nav-number">1.0.4.</span> <span class="nav-text">Running Multiple（TODO TEST 多模型加载）</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2020</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/longerking-blogs/">longerking</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ChatGLM-Deploy-FastChat"><span class="nav-number">1.</span> <span class="nav-text">ChatGLM-Deploy-FastChat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-FastChat"><span class="nav-number">1.0.1.</span> <span class="nav-text">Install FastChat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Load-Models"><span class="nav-number">1.0.2.</span> <span class="nav-text">Load Models</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Use-serve-cli-testing-model"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">Use serve.cli testing model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#serve-controller-for-RESTful-API-Server"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">serve.controller for RESTful API Server</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-APIs"><span class="nav-number">1.0.3.</span> <span class="nav-text">Test APIs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Interact-with-mode%EF%BC%88OpenAI%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">Interact with mode（OpenAI方式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#List-Models"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">List Models</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Chat-Completions"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">Chat Completions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Text-Completions"><span class="nav-number">1.0.3.4.</span> <span class="nav-text">Text Completions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Embeddings"><span class="nav-number">1.0.3.5.</span> <span class="nav-text">Embeddings:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Running-Multiple%EF%BC%88TODO-TEST-%E5%A4%9A%E6%A8%A1%E5%9E%8B%E5%8A%A0%E8%BD%BD%EF%BC%89"><span class="nav-number">1.0.4.</span> <span class="nav-text">Running Multiple（TODO TEST 多模型加载）</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/longerking-blogs/js/utils.js"></script>
+
+<script src="/longerking-blogs/js/header-shrink.js"></script>
+
+<script src="/longerking-blogs/js/back2top.js"></script>
+
+<script src="/longerking-blogs/js/toggle-theme.js"></script>
+
+<script src="/longerking-blogs/js/code-block.js"></script>
+
+<script src="/longerking-blogs/js/main.js"></script>
+
+<script src="/longerking-blogs/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/longerking-blogs/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/longerking-blogs/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/longerking-blogs/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/longerking-blogs/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/longerking-blogs/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+    
+<script src="//cdn.jsdelivr.net/npm/mermaid@10.5.0/dist/mermaid.min.js"></script>
+
+    <script data-pjax>
+      if (window.mermaid) {
+        mermaid.init()
+      }
+    </script>
+
+
+
+
+
+
+<!-- pjax -->
+
+    
+<script src="/longerking-blogs/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

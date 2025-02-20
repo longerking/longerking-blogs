@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Just Work for Life,  Be Your Longer King!">
+    <meta name="author" content="longerking">
+    
+    <title>
+        
+            进程间通信-共享内存 |
+        
+        LongerKing-Blogs
+    </title>
+    
+<link rel="stylesheet" href="/longerking-blogs/css/style.css">
+
+    
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/longerking-blogs/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"longerking.github.io","root":"/longerking-blogs/","language":"zh-CN","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"title":"LongerKing-Blogs","author":"longerking","url":"https://longerking.github.io/longerking-blogs"},"menu":{"Home":"/","Archives":"/archives","Tags":"/tags","Categories":"/categories","About":"/about"},"first_screen":{"enable":false,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":false},"social_contact":{"enable":false,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"facebook":null,"email":null}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":false,"tag":false,"post_datetime":"updated"},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"enable":true,"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","img_align":"left","copyright_info":true},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.8"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":"longerking/longerking-blogs","repo_id":"R_kgDOJ8DDFw","category":"General","category_id":"DIC_kwDOJ8DDF84CYoZz","reactions_enabled":true}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"jsdelivr"},"pjax":{"enable":true},"footer":{"since":2020,"word_count":false,"icp":{"enable":false,"record_code":null,"url":"https://beian.miit.gov.cn"},"site_deploy":{"enable":false,"provider":"github","url":null},"shields_style":{"enable":false,"custom":[{"link_url":null,"img_url":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"/longerking-blogs","style":{"primary_color":"#0066cc","logo":"/images/logo.svg","favicon":"/images/logo.svg","avatar":"/images/avatar.svg","font_size":null,"font_family":null,"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"header_transparent":false,"background_img":"/images/bg.svg","description":"Just Work for Life! ||  Be Your Longer King!","font_color":null,"hitokoto":false},"scroll":{"progress_bar":true,"percent":false}},"home_article":{"category":{"enable":true,"limit":3},"tag":{"enable":true,"limit":5}},"source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+            <a class="site-name border-box" href="/longerking-blogs/">
+               LongerKing-Blogs
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/">
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/archives">
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/tags">
+                                
+                                标签
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/categories">
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/longerking-blogs/about">
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/">
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/archives">
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/tags">
+                            
+                            标签
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/categories">
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/longerking-blogs/about">
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        进程间通信-共享内存
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">longerking</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2024-09-19 14:16:15</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Fri Sep 20 2024 07:21:16 GMT+0000">2024-09-20 07:21:16</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/longerking-blogs/categories/C-C/">C/C++</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/longerking-blogs/tags/%E5%B5%8C%E5%85%A5%E5%BC%8FLinux/">嵌入式Linux</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/longerking-blogs/tags/C-C/">C/C++</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>3.5k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>15 分钟</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h2 id="为什么使用共享内存"><a href="#为什么使用共享内存" class="headerlink" title="为什么使用共享内存"></a>为什么使用共享内存</h2><p>共享内存（Shared Memory）是操作系统提供的一种机制，允许多个进程或者现成访问同一块<strong>内存空间</strong>，这样可以快速的交换数据和消息。</p>
+<p>使用共享内存的原因主要包括以下几点：</p>
+<ol>
+<li><strong>高性能的数据交换</strong>：共享内存通常比其他通信机制（如管道、消息队列、Socket等）更快，因为它减少了数据复制的次数。在共享内存中，数据只需写入一次，可以被多个进程直接访问。</li>
+<li><strong>同步机制</strong>：共享内存通常与同步原语（如互斥锁、信号量等）结合使用，以控制多个进程或线程对共享数据的访问，保证数据的一致性和完整性。</li>
+<li><strong>方便的数据共享</strong>：在多进程或多线程应用中，共享内存提供了一种简单的方式来共享大量数据，无需通过繁琐的数据传递过程。</li>
+<li><strong>减少资源消耗</strong>：使用共享内存可以减少系统资源的使用，因为它不需要像其他通信机制那样进行数据的多次复制。</li>
+</ol>
+<p>在嵌入式系统中，使用共享内存的原因与在通用计算环境中使用共享内存的原因类似，但也具有一些特定的考虑因素。以下是在嵌入式系统中使用共享内存的几个主要原因：</p>
+<ol>
+<li><strong>资源限制</strong>：嵌入式系统通常具有有限的资源，包括内存、处理能力和功耗。共享内存可以减少内存占用，因为它允许多个组件或任务共享相同的数据，而不需要为每个组件或任务复制数据。</li>
+<li><strong>性能要求</strong>：嵌入式系统经常需要在严格的实时性能要求下运行。共享内存提供了快速的通信机制，可以减少数据传输延迟，这对于满足实时性要求至关重要。</li>
+<li><strong>低功耗</strong>：通过减少数据传输和复制，共享内存有助于降低功耗，这对于电池供电的嵌入式设备来说尤为重要。</li>
+<li><strong>简化设计</strong>：共享内存可以简化系统设计，因为它减少了需要管理的通信接口数量。这对于减少硬件复杂性和降低成本非常有用。</li>
+<li><strong>通信效率</strong>：在多处理器或多核嵌入式系统中，共享内存可以提供高效的处理器间通信，这对于并行处理和任务分配非常重要。</li>
+</ol>
+<pre class="mermaid">graph LR
+	进程A <--> 共享内存 <--> 进程B
+	进程C <--> 共享内存 <--> 进程...</pre>
+
+
+
+<h2 id="共享内存的应用"><a href="#共享内存的应用" class="headerlink" title="共享内存的应用"></a>共享内存的应用</h2><p>共享内存函数由shmget、shmat、shmdt、shmctl四个函数组成。</p>
+<h3 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h3><p>shmget(得到一个共享内存标识符或创建一个共享内存对象)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ipc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/shm.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 把从pathname(已存在的路径)导出的信息与id的低序8位组合成生成一个唯一的整数IPC键，用户进程间通信</span></span><br><span class="line"><span class="comment"> * __pathname: 指定的文件，此文件必须存在且可存取</span></span><br><span class="line"><span class="comment"> * __proj_id:  计划代号（project ID），这里可以表示为指定共享内存变量的Id，（0-255）</span></span><br><span class="line"><span class="comment"> * key_t一般为32位的int型的IPC键</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">key_t</span> <span class="title function_">ftok</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *__pathname, <span class="type">int</span> __proj_id)</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 得到一个共享内存标识符或创建一个共享内存对象并返回共享内存标识符</span></span><br><span class="line"><span class="comment">* key:  0(IPC_PRIVATE)：会建立新共享内存对象</span></span><br><span class="line"><span class="comment">*       大于0的32位整数：视参数shmflg来确定操作。通常要求此值来源于ftok返回的IPC键值</span></span><br><span class="line"><span class="comment">* size: 大于0的整数：新建的共享内存大小，以字节为单位, </span></span><br><span class="line"><span class="comment">* 		0：只获取共享内存时指定为0</span></span><br><span class="line"><span class="comment">* shmflg: 0：取共享内存标识符，若不存在则函数会报错</span></span><br><span class="line"><span class="comment">* 		  IPC_CREAT：当shmflg&amp;IPC_CREAT为真时，如果内核中不存在键值与key相等的共享内存，则新建一个共享内存；如果存在这样的共享内存，返回此共享内存的标识符</span></span><br><span class="line"><span class="comment">* 		  IPC_CREAT|IPC_EXCL：如果内核中不存在键值与key相等的共享内存，则新建一个消息队列；如果存在这样的共享内存则报错</span></span><br><span class="line"><span class="comment">*         shmflg参数为模式标志参数，使用时需要与IPC对象存取权限（如0600）进行|运算来确定信号量集的存取权限</span></span><br><span class="line"><span class="comment">* return 成功：返回共享内存的标识符 出错：-1，错误原因存于error中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">shmget</span><span class="params">(<span class="type">key_t</span> key, <span class="type">size_t</span> size, <span class="type">int</span> shmflg)</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 连接共享内存, 连接共享内存标识符为shmid的共享内存，连接成功后把共享内存区对象映射到调用进程的地址空间，随后可像本地空间一样访问</span></span><br><span class="line"><span class="comment">* __shmid: 共享内存标识符</span></span><br><span class="line"><span class="comment">* *__shmaddr: 指定共享内存出现在进程内存地址的什么位置，直接指定为NULL让内核自己决定一个合适的地址位置</span></span><br><span class="line"><span class="comment">* shmflg: SHM_RDONLY：为只读模式  </span></span><br><span class="line"><span class="comment">* 		  0: 表示默认行为，读写权限</span></span><br><span class="line"><span class="comment">*         SHM_RND: 如果设置了此标识，并且shmaddr部位NULL，共享内存附加地址会向下舍入到SHMLBA中</span></span><br><span class="line"><span class="comment">* return 成功 返回 共享内存段附加在进程地址空间的地址，即进程中使用的共享变量地址</span></span><br><span class="line"><span class="comment">*        失败 返回 (void *)-1 ，并设置errno错误值</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">void</span> *<span class="title function_">shmat</span><span class="params">(<span class="type">int</span> __shmid, <span class="type">const</span> <span class="type">void</span> *__shmaddr, <span class="type">int</span> __shmflg)</span>;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 断开共享内存连接</span></span><br><span class="line"><span class="comment">* __shmaddr: 连接的共享内存的起始地址, 进程内部访问的共享内存变量地址</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">shmdt</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *__shmaddr)</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 共享内存管理，共享内存的控制， 如删除重置等。没有执行，则共享内存最后状态会保留在内存中，即使程序结束了，也会保存。</span></span><br><span class="line"><span class="comment">* 不常用，应为多个进程中，这里删除了，其他进程无法访问了。可以通过IPC_STAT来判断最后一次附加shmat共享内存的时间,以及断开分离</span></span><br><span class="line"><span class="comment">* shmdt共享内存的时间来判断是否删除等。以及获取有多少个进程操作共享内存。</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* shmid:</span></span><br><span class="line"><span class="comment">* cmd: IPC_STAT：得到共享内存的状态，把共享内存的shmid_ds结构复制到buf中</span></span><br><span class="line"><span class="comment">* cmd: IPC_SET：改变共享内存的状态，把buf所指的shmid_ds结构中的uid、gid、mode复制到共享内存的shmid_ds结构内</span></span><br><span class="line"><span class="comment">* cmd: IPC_RMID：删除这片共享内存</span></span><br><span class="line"><span class="comment">* buf: 共享内存管理结构体。具体说明参见共享内存内核结构定义部分</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">shmctl</span><span class="params">(<span class="type">int</span> shmid, <span class="type">int</span> cmd, <span class="keyword">struct</span> shmid_ds *buf)</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>创建两个C程序，process_a.c  和 process_b.c。  两个程序访问同一个内存变量，使用ftok操作同一个可访问的pathname文件路径和同一个proj_id标识， 可以使用不同的pathname和不同的proj_id来标识不同的文件索引节点上的不同IPC标识。<br>其中process_a程序，更新写入 IPC shmKey为(process_a, 65)的内存变量，而process_b程序，读取shmKey同样为(process_a, 65)的内存变量。</p>
+<p>process_a.c 文件，编译gcc .&#x2F;process_a.c -o process_a</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * process_a 文件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ipc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/shm.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;error.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SHM_SIZE 1024  <span class="comment">// 定义共享内存大小</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">key_t</span> key = ftok(<span class="string">&quot;process_a&quot;</span>, <span class="number">65</span>);  <span class="comment">// 创建一个唯一的键  proj_id 范围 （0-256)  低8位 组合为IPC键值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// key_t key = ftok(&quot;process_a&quot;, 257);  // 创建一个唯一的键   257 = 0x101  1=0x01    ，  等价于 &lt;==&gt;  key_t shmKey = ftok(&quot;process_a&quot;, 1);</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> shmid = shmget(key, SHM_SIZE, IPC_CREAT|<span class="number">0600</span>);   <span class="comment">// 创建共享内存, 内存长度为SHM_SIZE</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (shmid &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">&quot;shmget error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> *shm_value1 = (<span class="type">char</span> *) shmat(shmid, <span class="literal">NULL</span>, <span class="number">0</span>); <span class="comment">// 连接共享内存   char 类型</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// int *shm_value2 = (int *) shmat(shmid, (void*)0, 0); // 连接共享内存 int 类型   void*指针，可以任意转换类型</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i&lt;<span class="number">10</span>)</span><br><span class="line">    &#123;   </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;process_a now set shm_value1 to [shm_value1=%d]\n&quot;</span>, i);</span><br><span class="line">        <span class="built_in">sprintf</span>(shm_value1, <span class="string">&quot;shm_value1=%d&quot;</span>, i);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// *shm_value2 = 10*i;   // int类型的直接赋值即可，不需要使用sprintf进行拷贝</span></span><br><span class="line">        i++;</span><br><span class="line">        sleep(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 断开共享内存连接</span></span><br><span class="line">    shmdt(shm_value1);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>process_b.c 文件  编译 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * process_b 文件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ipc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/shm.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;error.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SHM_SIZE 1024  <span class="comment">// 定义共享内存大小</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 需要和process_a中，是同样的pathname 和 proj_id ,才能访问到同一个__pathname, 和 proj_id标识的内存变量内存变量</span></span><br><span class="line"></span><br><span class="line">    <span class="type">key_t</span> shmKey = ftok(<span class="string">&quot;process_a&quot;</span>, <span class="number">65</span>);  <span class="comment">// 创建一个唯一的键  65</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// key_t shmKey = ftok(&quot;process_a&quot;, 1);  // 创建一个唯一的键  1</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">-1</span> == shmKey) &#123;</span><br><span class="line">        perror(<span class="string">&quot;获取65的shmKey异常&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> shmid = shmget(shmKey, SHM_SIZE, IPC_CREAT|<span class="number">0600</span>);   <span class="comment">// 创建共享内存, 内存长度为SHM_SIZE</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (shmid &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">&quot;shmget error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> *shm_value1 = (<span class="type">char</span> *) shmat(shmid, <span class="literal">NULL</span>, <span class="number">0</span>); <span class="comment">// 连接共享内存   char 类型</span></span><br><span class="line">    <span class="comment">// char *shm_value1 = (char *) shmat(shmid, NULL, SHM_RDONLY); // 连接共享内存   char 类型  SHM_RDONLY 只读连接，无法修改</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// int *shm_value1 = (int *) shmat(shmid, (void*)0, 0); // 连接共享内存 int 类型   void*指针，可以任意转换类型</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i&lt;<span class="number">10</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果没有进行上面的定义</span></span><br><span class="line">        <span class="comment">// sprintf(shm_value1, &quot;new set shm_value1 to %d&quot;, i);</span></span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;process_b read: %s\n&quot;</span>, shm_value1);</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 断开共享内存连接</span></span><br><span class="line">    shmdt(shm_value1);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>开两个终端分别运行两个程序，两个程序都谁先运行都可以，因为都使用了ftok和shmget创建了指定的共享内存，不会重复创建。</p>
+<p>运行process_a，写入共享内存，3秒更新写一次；运行process_b，读取共享内存，1秒读一次</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">keyinwang@WondersWL:~/Projects/DemoC/shared_mem$ ./process_a </span><br><span class="line">process_a now set shm_value1 to [shm_value1=0]</span><br><span class="line">process_a now set shm_value1 to [shm_value1=1]</span><br><span class="line">process_a now set shm_value1 to [shm_value1=2]</span><br><span class="line">process_a now set shm_value1 to [shm_value1=3]</span><br><span class="line">process_a now set shm_value1 to [shm_value1=4]</span><br><span class="line">process_a now set shm_value1 to [shm_value1=5]</span><br><span class="line"></span><br><span class="line">// ......</span><br><span class="line">keyinwang@WondersWL:~/Projects/DemoC/shared_mem$ ./process_b </span><br><span class="line">process_b read: shm_value1=1</span><br><span class="line">process_b read: shm_value1=1</span><br><span class="line">process_b read: shm_value1=2</span><br><span class="line">process_b read: shm_value1=2</span><br><span class="line">process_b read: shm_value1=2</span><br><span class="line">process_b read: shm_value1=3</span><br></pre></td></tr></table></figure>
+
+
+
+<p>注意当process_a中途结束或者结束运行时，再次运行process_b时，发现共享内存是最后改动的值，而不是空值，说明即使程序结束运行，而共享内存依然存在，这是因为我们没有使用shmctl删除共享内存。因此就一直保留在内存指定地址中。</p>
+<h3 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h3><p>为了提供共享内存的可读性和复用性，我们可以将pathname节点和proj_id 抽象提取出来表示不通的共享内存变量，并可以设置不通变量的指定shmSize。</p>
+<p>如可以定义一个头文件shm_util.h</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shm_util.h 定义各个进程之前的共享内存参数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * shm_device_status:  运行状态  int *shm_device_status</span></span><br><span class="line"><span class="comment"> * 0：已开机</span></span><br><span class="line"><span class="comment"> * 1：开机中</span></span><br><span class="line"><span class="comment"> * 2：开机成功</span></span><br><span class="line"><span class="comment"> * 3：关机中</span></span><br><span class="line"><span class="comment"> * 4：重启中</span></span><br><span class="line"><span class="comment"> * 5：升级中</span></span><br><span class="line"><span class="comment"> * -1：运行出错 </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SHMID_DEVICE_STATUS 1    <span class="comment">// proj_id = 1表示  device_status 的内存变量shm_device_status，定义值保存了int类型的，用来表示设备不通时期的状态，需要共享给其他程序。</span></span></span><br><span class="line"><span class="comment">/**定义status共享内存长度 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SHMSIZE_STATUS 8    <span class="comment">// 这里定义 shmsize_status </span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** pathname */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SHMPATHNAME_PROCESS <span class="string">&quot;/home/keyinwang/Projects/DemoC/shared_mem/process_c&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * shm_battery_voltage:  电池电压  char *shm_device_status</span></span><br><span class="line"><span class="comment"> * float 转 chat []   如 5.000   4.890    单位V</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SHMID_BATTERY_VOLTAGE 2</span></span><br><span class="line"><span class="comment">/**定义status共享内存长度 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SHMSIZE_VOL 6    <span class="comment">// 这里定义 shmsize_vol</span></span></span><br></pre></td></tr></table></figure>
+
+<p>共享内存写进程process_c.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * process_c 文件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ipc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/shm.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;error.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**引入公共定义好的共享变量参数 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;shm_util.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 第一个共享变量</span></span><br><span class="line">    <span class="type">key_t</span> shmKey = ftok(SHMPATHNAME_PROCESS, SHMID_DEVICE_STATUS);  <span class="comment">// 创建一个唯一的键</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">-1</span> == shmKey) &#123;</span><br><span class="line">        perror(<span class="string">&quot;获取 SHMPATHNAME_PROCESS  SHMID_DEVICE_STATUS 的shmKey异常&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> shmid = shmget(shmKey, SHMSIZE_STATUS, IPC_CREAT|<span class="number">0600</span>);   <span class="comment">// 创建共享内存, 内存长度为SHM_SIZE</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (shmid &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">&quot;shmget SHMID_DEVICE_STATUS error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> *shm_device_status = (<span class="type">int</span> *) shmat(shmid, (<span class="type">void</span>*)<span class="number">0</span>, <span class="number">0</span>); <span class="comment">// 连接共享内存</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第二个共享变量</span></span><br><span class="line">    shmKey = ftok(SHMPATHNAME_PROCESS, SHMID_BATTERY_VOLTAGE);  <span class="comment">// 创建一个唯一的键</span></span><br><span class="line">    shmid = shmget(shmKey, SHMSIZE_VOL, IPC_CREAT|<span class="number">0600</span>);   <span class="comment">// 创建共享内存, 内存长度为SHMSHZI_VOL</span></span><br><span class="line">    <span class="keyword">if</span> (shmid &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">&quot;shmget SHM_BATTERY_VOLTAGE error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">char</span> *shm_battery_voltage = (<span class="type">char</span> *) shmat(shmid, <span class="literal">NULL</span>, <span class="number">0</span>); <span class="comment">// 连接共享内存</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i&lt;<span class="number">10</span>)</span><br><span class="line">    &#123;   </span><br><span class="line">        *shm_device_status = i;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;set int *shm_device_status=%d\n&quot;</span>, *shm_device_status);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="built_in">sprintf</span>(shm_battery_voltage, <span class="string">&quot;%d.000V&quot;</span>, i);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;set char *shm_battery_voltage=%s\n&quot;</span>, shm_battery_voltage);</span><br><span class="line">       </span><br><span class="line">        sleep(<span class="number">3</span>);</span><br><span class="line">        </span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 断开共享内存连接</span></span><br><span class="line">    shmdt(shm_device_status);</span><br><span class="line">    shmdt(shm_battery_voltage);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>共享内存读进程process_d.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * process_c 文件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ipc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/shm.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;error.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**引入公共定义好的共享变量参数 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;shm_util.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 第一个共享变量</span></span><br><span class="line">    <span class="type">key_t</span> shmKey = ftok(SHMPATHNAME_PROCESS, SHMID_DEVICE_STATUS);  <span class="comment">// 创建一个唯一的键</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">-1</span> == shmKey) &#123;</span><br><span class="line">        perror(<span class="string">&quot;获取 SHMPATHNAME_PROCESS  SHMID_DEVICE_STATUS 的shmKey异常&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> shmid = shmget(shmKey, SHMSIZE_STATUS, IPC_CREAT|<span class="number">0600</span>);   <span class="comment">// 创建共享内存, 内存长度为SHM_SIZE</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (shmid &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">&quot;shmget SHMID_DEVICE_STATUS error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> *shm_device_status = (<span class="type">int</span> *) shmat(shmid, (<span class="type">void</span>*)<span class="number">0</span>, <span class="number">0</span>); <span class="comment">// 连接共享内存</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第二个共享变量</span></span><br><span class="line">    shmKey = ftok(SHMPATHNAME_PROCESS, SHMID_BATTERY_VOLTAGE);  <span class="comment">// 创建一个唯一的键</span></span><br><span class="line">    shmid = shmget(shmKey, SHMSIZE_VOL, IPC_CREAT|<span class="number">0600</span>);   <span class="comment">// 创建共享内存, 内存长度为SHMSHZI_VOL</span></span><br><span class="line">    <span class="keyword">if</span> (shmid &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">&quot;shmget SHM_BATTERY_VOLTAGE error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">char</span> *shm_battery_voltage = (<span class="type">char</span> *) shmat(shmid, <span class="literal">NULL</span>, <span class="number">0</span>); <span class="comment">// 连接共享内存</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i&lt;<span class="number">10</span>)</span><br><span class="line">    &#123;   </span><br><span class="line"></span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;process_d read int *shm_device_status: %d\n&quot;</span>, *shm_device_status);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;process_d read char *shm_battery_voltage: %s\n&quot;</span>, shm_battery_voltage);</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 断开共享内存连接</span></span><br><span class="line">    shmdt(shm_device_status);</span><br><span class="line">    shmdt(shm_battery_voltage);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译Makefile</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">TARGETS = process_c process_d</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 列出所有.c文件</span></span><br><span class="line"><span class="comment"># SRCS = $(wildcard *.c)</span></span><br><span class="line"><span class="comment"># # 根据SRCS生成点o文件</span></span><br><span class="line"><span class="comment"># OBJS = $(patsubst %.c, %.c.o, $(SRCS))</span></span><br><span class="line"></span><br><span class="line">SRCS1=process_c.c</span><br><span class="line">OBJS1=$(SRCS1:.c=.o)</span><br><span class="line"></span><br><span class="line">SRCS2=process_d.c</span><br><span class="line">OBJS2=$(SRCS2:.c=.o)</span><br><span class="line"></span><br><span class="line"><span class="section">all: <span class="variable">$(TARGETS)</span> </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">process_c: <span class="variable">$(OBJS1)</span></span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$^</span> <span class="variable">$(LIBS)</span> <span class="variable">$(LDFLAGS)</span> <span class="variable">$(LOCAL_LDFLAGS)</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">process_d: <span class="variable">$(OBJS2)</span></span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$^</span> <span class="variable">$(LIBS)</span> <span class="variable">$(LDFLAGS)</span> <span class="variable">$(LOCAL_LDFLAGS)</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">process_c.o: process_c.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(INCLUDES)</span> -c <span class="variable">$^</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="section">process_d.o: process_d.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(INCLUDES)</span> -c <span class="variable">$^</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -rf <span class="variable">$(TARGETS)</span> <span class="variable">$(OBJS1)</span> <span class="variable">$(OBJS2)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all clean</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>编译执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">keyinwang@WondersWL:~/Projects/DemoC/shared_mem$ make</span><br><span class="line">cc   -c process_c.c -o process_c.o</span><br><span class="line">cc process_c.o    -o process_c</span><br><span class="line">cc   -c process_d.c -o process_d.o</span><br><span class="line">cc process_d.o    -o process_d</span><br><span class="line"></span><br><span class="line">// 终端1执行</span><br><span class="line">keyinwang@WondersWL:~/Projects/DemoC/shared_mem$ ./process_c </span><br><span class="line">set int *shm_device_status=0</span><br><span class="line">set char *shm_battery_voltage=0.000V</span><br><span class="line">set int *shm_device_status=1</span><br><span class="line">set char *shm_battery_voltage=1.000V</span><br><span class="line">set int *shm_device_status=2</span><br><span class="line">set char *shm_battery_voltage=2.000V</span><br><span class="line">set int *shm_device_status=3</span><br><span class="line">set char *shm_battery_voltage=3.000V</span><br><span class="line"></span><br><span class="line">// 终端2执行</span><br><span class="line">keyinwang@WondersWL:~/Projects/DemoC/shared_mem$ ./process_d</span><br><span class="line">process_d read int *shm_device_status: 2</span><br><span class="line">process_d read char *shm_battery_voltage: 2.000V</span><br><span class="line">process_d read int *shm_device_status: 2</span><br><span class="line">process_d read char *shm_battery_voltage: 2.000V</span><br><span class="line">process_d read int *shm_device_status: 3</span><br><span class="line">process_d read char *shm_battery_voltage: 3.000V</span><br></pre></td></tr></table></figure>
+
+<p>至此，完成了多个进程只想的共享内存使用。</p>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                进程间通信-共享内存
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2024/09/19/进程间通信-共享内存/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    作者
+                </div>
+                <div class="content">longerking</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    发布于
+                </div>
+                <div class="content">2024-09-19 14:16</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    许可
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="复制版权信息" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/longerking-blogs/tags/%E5%B5%8C%E5%85%A5%E5%BC%8FLinux/">嵌入式Linux</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/longerking-blogs/tags/C-C/">C/C++</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/longerking-blogs/2023/08/15/chatglm-deploy-fastchat/"
+                                   title="ChatGLM-Deploy-FastChat"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">ChatGLM-Deploy-FastChat</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'longerking/longerking-blogs')
+              script.setAttribute('data-repo-id', 'R_kgDOJ8DDFw')
+              script.setAttribute('data-category', 'General')
+              script.setAttribute('data-category-id', 'DIC_kwDOJ8DDF84CYoZz')
+              script.setAttribute('data-reactions-enabled', '1')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">为什么使用共享内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">共享内存的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%8E%9F%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">函数原型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%A4%BA"><span class="nav-number">2.3.</span> <span class="nav-text">提示</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2020</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/longerking-blogs/">longerking</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">为什么使用共享内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">共享内存的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%8E%9F%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">函数原型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%A4%BA"><span class="nav-number">2.3.</span> <span class="nav-text">提示</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/longerking-blogs/js/utils.js"></script>
+
+<script src="/longerking-blogs/js/header-shrink.js"></script>
+
+<script src="/longerking-blogs/js/back2top.js"></script>
+
+<script src="/longerking-blogs/js/toggle-theme.js"></script>
+
+<script src="/longerking-blogs/js/code-block.js"></script>
+
+<script src="/longerking-blogs/js/main.js"></script>
+
+<script src="/longerking-blogs/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/longerking-blogs/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/longerking-blogs/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/longerking-blogs/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/longerking-blogs/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/longerking-blogs/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+    
+<script src="//cdn.jsdelivr.net/npm/mermaid@10.5.0/dist/mermaid.min.js"></script>
+
+    <script data-pjax>
+      if (window.mermaid) {
+        mermaid.init()
+      }
+    </script>
+
+
+
+
+
+
+<!-- pjax -->
+
+    
+<script src="/longerking-blogs/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
